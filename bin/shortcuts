@@ -1,3 +1,4 @@
 #!/bin/bash
 
 echo "1. use mod+h mod+w on primary, focus secondary, move into primary, to create partial window tabbed groups"
+echo "2. run \`kitty +kitten ssh myserver\` once to copy terminfo files to target server"
