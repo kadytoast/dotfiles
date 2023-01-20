@@ -24,7 +24,7 @@ font pango:monospace 11
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+#exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -155,16 +155,16 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 5 px or 5 ppt
-        bindsym k resize grow height 5 px or 5 ppt
-        bindsym l resize shrink height 5 px or 5 ppt
-        bindsym semicolon resize grow width 5 px or 5 ppt
+        bindsym j resize shrink width 2 px or 2 ppt
+        bindsym k resize grow height 2 px or 2 ppt
+        bindsym l resize shrink height 2 px or 2 ppt
+        bindsym semicolon resize grow width 2 px or 2 ppt
 
         # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 5 px or 5 ppt
-        bindsym Down resize grow height 5 px or 5 ppt
-        bindsym Up resize shrink height 5 px or 5 ppt
-        bindsym Right resize grow width 5 px or 5 ppt
+        bindsym Left resize shrink width 2 px or 2 ppt
+        bindsym Down resize grow height 2 px or 2 ppt
+        bindsym Up resize shrink height 2 px or 2 ppt
+        bindsym Right resize grow width 2 px or 2 ppt
 
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
@@ -179,25 +179,21 @@ bindsym $mod+r mode "resize"
 
 ### MY ADDITIONS
 
-# set resolution & second version to account for changing output id (for some reason)
-exec --no-startup-id xrandr --output eDP-1 --mode 1920x1080
-exec --no-startup-id xrandr --output eDP-1-1 --mode 1920x1080
-
 # sleep and shutdown menu on mod escape
-#set $Locker i3lock --color=443045 && sleep 1
-set $Locker i3lock -i ~/Documents/backgrounds/lock.png && sleep 1
+#set $Locker i3lock --color=11111b && sleep 1
+#set $Locker i3lock -i ~/Documents/backgrounds/lock.png && sleep 1
 
 # original
 # set $mode_system (l)lock  (e)logout  (s)suspend  (h)hibernate  (r)reboot  (Shift+s)shutdown
 
-# editied for no swaps (ih broki)
-set $mode_system (l)lock  (e)logout  (h)hibernate  (r)reboot  (Shift+s)shutdown
+# editied for no hibernate (ih broki)
+set $mode_system (l)lock  (e)logout  (s)suspend  (r)reboot  (Shift+s)shutdown
 
 mode "$mode_system" {
-	bindsym l exec --no-startup-id $Locker, mode "default"
+	bindsym l exec --no-startup-id loginctl lock-session, mode "default"
 	bindsym e exec --no-startup-id i3-msg exit, mode "default"
-	# bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
-	bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+	bindsym s exec --no-startup-id systemctl suspend, mode "default"
+	#bindsym h exec --no-startup-id systemctl hibernate, mode "default"
 	bindsym r exec --no-startup-id systemctl reboot, mode "default"
 	bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 
@@ -210,8 +206,8 @@ bindsym $mod+Escape mode "$mode_system"
 
 
 # gaps
-gaps inner 10
-gaps outer 10
+gaps inner 8
+gaps outer 8
 
 for_window [class="^.*"] border pixel 2
 
@@ -263,6 +259,8 @@ bindsym $mod+d exec "dmenu_run -nf '#BBBBBB' -nb '#222222' -sb '#302D41' -sf '#D
 bindsym Print exec gnome-screenshot -f ~/Pictures/shot_`date +%Y-%m-%d_%H:%M:%S`.png
 #crop-area screenshot by pressing Mod + printscreen
 bindsym $mod+Print exec gnome-screenshot -a -f ~/Pictures/shot_`date +%Y-%m-%d_%H:%M:%S`.png
+#crop-area screenshot saved directly to chem obsidian directory
+bindsym $mod+Shift+Print exec gnome-screenshot -a -f ~/nextcloudsync/ssd/school/chem_notes/media/shot_`date +%Y-%m-%d_%H:%M:%S`.png
 
 # move workspace left and right
 #bindsym $mod+Ctrl+Left workspace prev
@@ -270,7 +268,9 @@ bindsym $mod+Print exec gnome-screenshot -a -f ~/Pictures/shot_`date +%Y-%m-%d_%
 
 
 # set background image
-exec --no-startup-id feh --bg-scale ~/Documents/backgrounds/dark-cat-rosewater.png
+# make sure to disable gnome handling this ! run:
+# gsettings set org.gnome.gnome-flashback.desktop draw-background false
+#exec --no-startup-id feh --bg-fill ~/Documents/backgrounds/dark-cat-rosewater.png
 
 # transparent windows
 exec --no-startup-id compton
